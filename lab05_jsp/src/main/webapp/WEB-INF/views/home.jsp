@@ -21,7 +21,22 @@
         <%@ include file="./fragments/header.jspf" %>
     
     </div>
-    
+    <div>
+        <CENTER><img src="https://news.nateimg.co.kr/orgImg/hm/2021/09/05/202109050559572427275_20210905060033_01.jpg"  alt="오잉" /></CENTER>
+    </div>
+    <br/>
+    <div>
+        <center>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/YW5DCpi-t4U?si=NBhrY8C-OkMBy8eX&amp;controls=0&amp;autoplay=1&amp;mute=1&loop=1" title="YouTube video player" frameborder="0" allow="autoplay"></iframe>
+        </center>
+        <center>    
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/YO0BOLV9hxo?si=c9zOaq3yrDkyIrOc&amp;controls=0&amp;autoplay=1&amp;mute=1&loop=1"
+                title="YouTube video player" frameborder="0" allow="autoplay" >
+            </iframe>  
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/RPMb7LDAmP0?si=pDNw0FdiXg0JZpoG&amp;controls=0&amp;autoplay=1&amp;mute=1&loop=1"        title="YouTube video player" frameborder="0" allow="autoplay">
+            </iframe>
+        </center>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
         crossorigin="anonymous"></script>

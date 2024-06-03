@@ -2,7 +2,7 @@
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<header class="mt-2 p-4 bg-primary text-white text-center">
+<header class="mt-2 p-4 bg-success text-white text-center">
     <h1>${pageTitle}</h1>
 </header>
 
@@ -37,6 +37,12 @@
                         <c:url var="signOutPage" value="/user/signout" />
                         <%-- <span>${signdInUser}</span>은 로그인한 사용자 이름 뜨게하는 코드--%>
                         <a class="nav-link" href="${signOutPage}"><span>${signedInUser}</span>로그아웃</a>
+                    </li>
+                    <li>
+                        <c:url var="userProfilePage" value="/user/profile">
+                            <c:param name="userid" value="${signedInUser}"></c:param>
+                        </c:url>
+                        <a class="nav-link" href="${userProfilePage}">내 정보</a>
                     </li>
                 </c:if>
                 <c:if test="${empty signedInUser}">

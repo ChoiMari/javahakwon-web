@@ -35,6 +35,15 @@ public enum UserService {
     	return user; //-> 이 결과값 컨트롤러가 이용(새로 만들기) UserSignInController
     }
     
+    public User read(String userid) {
+        log.debug("read(userid={})", userid);
+        
+        User user = userDao.selectByUserid(userid);
+        log.debug("select 결과 = {}", user);
+        
+        return user;
+    }
+    
 }
 
 

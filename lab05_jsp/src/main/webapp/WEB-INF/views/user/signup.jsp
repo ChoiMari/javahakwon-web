@@ -1,3 +1,4 @@
+<%-- 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
@@ -53,7 +54,7 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
-
+--%>
 
 
 <%-- 
@@ -208,3 +209,69 @@
 </html>
 
 --%>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>sign up</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- MATERIAL DESIGN ICONIC FONT -->
+        <link rel="stylesheet" href="../signup/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+        
+        <!-- STYLE CSS -->
+        <link rel="stylesheet" href="../signup/css/style.css">
+    </head>
+
+    <body>
+
+        <div class="wrapper">
+            <div class="image-holder">
+                <img src="../signup/images/registration-form-8.jpg" alt="">
+            </div>
+            <div class="form-inner">
+                <form id="signUpForm" action="">
+                    <div class="form-header">
+                        <h3>Sign up</h3>
+                        <img src="../signup/images/sign-up.png" alt="" class="sign-up-icon">
+                    </div>
+                    <div class="form-group">
+                        <label for="">User ID:</label>
+                        <input id="userid" name="userid" type="text" class="form-control" data-validation="length alphanumeric" data-validation-length="3-12">
+                    </div>
+                    <div class="form-group" >
+                        <label for="">Password:</label>
+                        <input id="password" name="password" type="password" class="form-control" data-validation="length" data-validation-length="min8">
+                    </div>
+                    <div class="form-group">
+                        <label for="">E-mail:</label>
+                        <input id="email" name="email" type="text" class="form-control" data-validation="email">
+                    </div>
+                    <button id="btnCreate">create my account</button>
+                    <div class="socials">
+                        <p>Sign up with social platforms</p>
+                        <a href="https://www.facebook.com/?locale=ko_KR" class="socials-icon">
+                            <i class="zmdi zmdi-facebook"></i>
+                        </a>
+                        <a href="https://www.instagram.com/accounts/login/" class="socials-icon">
+                            <i class="zmdi zmdi-instagram"></i>
+                        </a>
+                        <a href="https://x.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoia28ifQ%3D%3D%22%7D" class="socials-icon">
+                            <i class="zmdi zmdi-twitter"></i>
+                        </a>
+                        <a href="https://www.tistory.com/auth/login" class="socials-icon">
+                            <i class="zmdi zmdi-tumblr"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+        
+        <script src="../signup/js/jquery-3.3.1.min.js"></script>
+        <script src="../signup/js/jquery.form-validator.min.js"></script>
+        <script src="../signup/js/main.js"></script>
+        <script src="../signup/js/user_signup.js"></script>
+    </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

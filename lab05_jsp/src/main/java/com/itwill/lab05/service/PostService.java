@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.itwill.lab05.repository.Post;
 import com.itwill.lab05.repository.PostDao;
+import com.itwill.lab05.repository.UserDao;
 
 //MVC 웹 아키텍쳐에서 Service(Business) 계층을 담당하는 클래스.
 // Persistenct(Repository) 계층의 기능(메서드를 호출해서)을 사용해서 비즈니스 로직을 구현하는 객체
@@ -18,7 +19,7 @@ public enum PostService {
 	
 	 // Persistence(Repository) 계층의 기능(메서드)들을 사용하기 위해서.
 	private final PostDao postDao = PostDao.INSTANCE;
-	
+	private final UserDao userDao = UserDao.INSTANCE;
 	
 	
 	
@@ -40,6 +41,12 @@ public enum PostService {
 		
 		//로그는 프로그램 동작에 필요없고 실행 흐름 보기 위해서 추가한 코드..
 		log.debug("insert result = {}", result);
+		
+		//TODO: UserDao 메서드 호출(오라클 DB의 USERS테이블의 POINTS 컬럼 업데이트)
+		//글 작성자에게 10포인트를 줌
+        // UserDao 메서드 호출(USERS.POINTS 컬럼 업데이트)
+        // 글 작성자에게 10포인트를 줌.
+        userDao.updatePoints(post.getAuthor(), 10); //-> 좀 더 안전한 코드는 insert 성공시에 실행되도록 하면 더 안전하다고함.
 		
 		return result;//insert된 행의 개수를 리턴.
 	}

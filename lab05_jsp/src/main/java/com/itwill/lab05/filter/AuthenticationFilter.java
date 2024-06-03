@@ -2,8 +2,15 @@ package com.itwill.lab05.filter;
 
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
@@ -19,7 +26,7 @@ public class AuthenticationFilter extends HttpFilter {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	private static final Logger log = LoggerFactory.getLogger(AuthenticationFilter.class);
 	/**
 	 * @see Filter#destroy()
 	 */
@@ -50,9 +57,55 @@ public class AuthenticationFilter extends HttpFilter {
 		//서블릿 메서드가 다 안보일때는 캐스팅(강제변환) 다형성 하면 된다고...
 		//WAS가 request넣어줌 다형성
 		HttpServletRequest req = ((HttpServletRequest)request);
+		String reqUrl = req.getRequestURL().toString();
+		log.debug("request URL = {}", reqUrl);
 		
-		// pass the request along the filter chain
-		chain.doFilter(request, response);
+		String reqUri = req.getRequestURI();
+		log.debug("request URI = {}", reqUri);
+		
+		//contextroot 참음
+		String contextPath = req.getContextPath();
+		log.debug("context path(root) = {}", contextPath);
+		
+		//쿼리스트링을 찾음(최초 요청주소의 쿼리스트링이라고 함)
+		String qs= req.getQueryString();
+		log.debug("query string = {}", qs);
+		
+		String target = ""; //로그인 성공했을 때 이동(redirect)할 요청 주소
+		
+		//encode메서드 1번째건 없어질수도 있는 메서드라서 아규먼트 2개짜리 메서드로 사용하기.
+		// 2번째 넣는 아규먼트는 인코딩 타입넣어주면 됨.
+		if(qs == null) { //쿼리스트링이 없는 경우
+			target = URLEncoder.encode(reqUrl, "UTF-8"); //인코딩 값 "UTF-8" 특수문자들을 코드값으로 바꿔주기 위해서
+		} else { //else -> 최초 요청 주소에 쿼리스트링이 있는 경우(상세보기인 경우 쿼리스트링이 있음)
+			target = URLEncoder.encode(reqUrl + "?" + qs , "UTF-8");
+		}
+		
+		log.debug("target = {}" , target);
+		
+		//세션에 로그인 정보(signedInUser)
+		HttpSession session = req.getSession();
+		Object signedInUser = session.getAttribute("signedInUser"); //리턴타입 오브젝트라고 함. String이 아니라고
+		//다형성. 필요에 따라서 변환해서 사용(casting) 
+		
+		//값 비교할 필요도 없이 세션에 저장된 signedInUser객체가 있으면 로그인 상태 없으면 로그인 안된 상태라고 함.
+		if(signedInUser == null) { //로그인 안 된 상태
+			//로그인 안되어있으면 로그인 페이지로 이동 --> 로그인 성공 하면 원래 가려던 경로(페이지)로 이동시킴
+			log.debug("로그아웃(NO 로그인)상태 --> 로그인 페이지로 이동시킴 --> 로그인 성공 후 target으로 이동 시킴");
+			
+			//-> 요청이 왔는데 로그인안했잖아?라고 로그인하려면 여기로 와. target값 붙여서 와 signin의 쿼리스트링 있으면 달고옴. 없으면 그냥 옴.
+			String url = req.getContextPath() + "/user/signin?target=" + target;
+			
+			((HttpServletResponse) response).sendRedirect(url);
+			//서블릿리스판스(ServletResponse)는 sendRedirect메서드 가지고 있지 않아서 HttpServletResponse로 변환시킴.
+			//ServletResponse가 부모타입 , HttpServletResponse가 자식
+		} else { //로그인 상태 ,signedInUser는 로그인 한 아이디
+			log.debug("로그인 상태: {}",signedInUser);
+			//요청을 계속 처리하겠다 (-> 요청을 그 요청을 처리하는 서블릿으로 전달하겠다)
+			//로그인 상태에서는 원래 가려던 경로로 가면 됨
+			chain.doFilter(req, response); //-> 이거 1개만 있어야 된다고 함.
+		}
+		
 	}
 
 	/**

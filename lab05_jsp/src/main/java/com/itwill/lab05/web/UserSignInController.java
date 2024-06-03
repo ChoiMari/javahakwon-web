@@ -1,6 +1,7 @@
 package com.itwill.lab05.web;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +44,19 @@ public class UserSignInController extends HttpServlet{
 		log.debug("doPost()");
 		
 		//로그인 화면에서 사용자가 입력(전송)한 userid, password 값을 읽음
+		//폼양식 데이터만 읽어들임. 2개의 input태그에서 submit된 값만 get파라미터 가능
+		//input태그에 name속성 준 게 2개밖에 없음 -> 그래서 signin.jsp에  <input name="targer" value="${param.target}" readonly />
+		//추가함.
 		String userid = req.getParameter("userid");
 		String password = req.getParameter("password");
 		
 		//서비스 계층의 메서드를 호출해서 로그인 성공 여부를 판단.
 		User user = userService.signIn(userid, password); //->리턴값이 null이아니면 성공이라고 판단. null이면 로그인 실패.
+		
+		//로그인 성공이면 타겟(target)페이지, 그렇지 않으면 다시 로그인 페이지로 이동:
+		String target = req.getParameter("target");
+		log.debug("target = {}",target);
+		
 		if(user != null) { //데이터베이스 users 테이블에서 일치하는 사용자 정보가 있는 경우
 			//세션에 로그인 정보 저장.(모든정보 저장할 필요는 없고, 필요한 정보만 저장)
 			//가려고 하는 목적지(페이지를 이동)로 이동
@@ -59,13 +68,22 @@ public class UserSignInController extends HttpServlet{
 			//페이지 이동 시키기.
 			//로그인이 끝난 후 가야될 페이지.
 			//일단, 나를 나중에 고쳐줘 FIXME: 타겟 목적지(URL)로 이동하는 코드
-			//일단 고치기 전까지 홈페이지로 이동
-			String target = req.getContextPath() + "/";
-			resp.sendRedirect(target);
+			//일단 고치기 전까지 홈페이지로 이동//->타겟의 값이 없는 경우
+			if(target == null || target.equals("")) { //타겟이 null이거나 비어있는 문자열인 경우 -> 홈페이지로 이동
+				String url = req.getContextPath() + "/"; //홈페이지로 이동
+				resp.sendRedirect(url); 
+			} else {
+				resp.sendRedirect(target); //-> 타켓 값이 있으면 실행
+			}
 			
 		}else {//테이블에서 일치하는 사용자 정보가 없는 경우(로그인에 실패했을 경우)아이디랑 비밀번호 틀려서 로그인실패
 			//다시 로그인페이지로 가야함. 이동
-			String url = req.getContextPath() + "/user/signin"; //->get방식이동 FIXME
+		//	String url = req.getContextPath() + "/user/signin"; //->get방식이동 FIXME 로그인 페이지로 이동. 
+			//근데 코드가 여기서 끝나면.. 원래 가려던 페이지의 정보가 사라져버림.
+			//로그인 실패 몇번을 하더라도 로그인 성공 하면 가려던 페이지로 가야함 그래서 수정함.
+            String url = req.getContextPath() 
+                    + "/user/signin?result=f&target=" 
+                    + URLEncoder.encode(target, "UTF-8"); //result=f 실패
 			resp.sendRedirect(url);//-> 리다이렉트라고 요청을 주면 그 다음엔 무조건 get방식이라고 함 ->doGet메서드 호출 -> 로그인페이지로 이동
 		}
 		
