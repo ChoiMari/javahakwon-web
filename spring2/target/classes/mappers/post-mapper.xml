@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwill.spring2.repository.PostDao"><!-- <select id="selectOrderByIdDesc" resultType="Post"> 프로그램에서 사용하게 될 sql문에 id를 주고 리턴할 클래스 타입설정함 -->
+    <select id="selectOrderByIdDesc" resultType="Post"> <!--resultType=는 원래 com.itwill.spring2.repository.Post이렇게 써야함. -->
+    <!--이를 간단히 사용하기 위해서 mybatis-config.xml에서 별명으로 Post라고 설정함. -->
+        select * from posts order by id desc <!--id기준 내림차순으로 전체 검색(select)하는 sql문장 -->
+    </select>
+</mapper>
