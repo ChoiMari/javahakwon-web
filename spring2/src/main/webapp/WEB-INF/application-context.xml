@@ -19,7 +19,7 @@
         
         <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe" />
         <property name="username" value="jspstudy"/>
-        <property name="password" value="jspstudy" />
+        <property name="password" value="jspstudy" /><!-- value 아규먼트로 전달하는 문자열 -->
     </bean>
     
     <!-- HikariDataSource 빈 생성을 위한 설정 -->
@@ -60,5 +60,13 @@
         이게 해주는 일 : base-package와 그 하위 패키지에 있는 인터페이스를 구현한 객체를 
         생성해준다!-->
      <mybatis:scan base-package="com.itwill.spring2.repository" />
+     <!--디스패쳐 서블릿이 스캔해서 @붙은 클래스들 bean으로 생성해서 관리하겠다 맞나?-->
+     
+ <!-- 스프링 컨테이너에서 컴포넌트 빈(예: @Service, @Component, ...)들을 검색할 기본 패키지를 설정 -->
+ <!-- 스프링 컨테이너가 설정된 패키지(com.itwill.spring2.service)와 그 하위 패키지를 검색(스캔)해서
+    컴포넌트애너테이션(@Service, @Component, ...)이 선언된 클래스의 객체를 생성하고 관리. 필요한곳에
+    의존성을 주입해준다.
+  -->
+     <context:component-scan base-package="com.itwill.spring2.service" />
      
 </beans>
